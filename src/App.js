@@ -100,17 +100,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <h1>Tezos User Verification System</h1>
         <div>{walletError && <p>{walletError}</p>}</div>
         <div>{contractError && <p>{contractError}</p>}</div>
-        <button onClick={connect}>Connect</button>
-        {initialized && <button onClick={parseStorage}>Parse Storage</button>}
-        {initialized && <button onClick={mint}>Mint</button>}
-        { storage &&
-        <div>
-          Next Token ID: {JSON.stringify(storage.next_token_id.c)}
-        </div>}
-        {/* { initialized && */}
-        <h1>Identities:</h1>
+        <button onClick={connect}>Connect Wallet</button>
+        {initialized && owned.length == 0 && <button onClick={mint}>Mint</button>}
         <div>
           {owned.map((item, i) => {
             return <Identity key={i} entries={item}/>;

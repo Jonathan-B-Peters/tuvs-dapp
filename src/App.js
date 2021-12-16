@@ -1,21 +1,15 @@
 import React from 'react';
-import { MichelsonMap, TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@taquito/taquito';
 import './App.css';
-import { REACT_APP_TEZOS_RPC_URL } from './globals'
+import { REACT_APP_TEZOS_RPC_URL, NFT_CONTRACT_ADDRESS } from './globals'
 import { useContract } from './hooks/use-contract';
 import { useWallet } from './hooks/use-wallet';
-import { useState } from 'react';
-
-// import {
-//   getActiveAccount,
-//   disconnect,
-//   clearActiveAccount,
-//   getNetworkPermission,
-//   getTokenContract
-// } from './tezos.js'
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import Identity from './Identity'
 
 function App() {
+
+  const [owned, setOwned] = useState([]);
 
   const tezos = new TezosToolkit(REACT_APP_TEZOS_RPC_URL)
 
@@ -24,55 +18,111 @@ function App() {
     address,
     error: walletError,
     loading: walletLoading,
+    wallet,
     connect: connectToWallet,
   } = useWallet(tezos);
   const {
     storage,
-    owned,
     error: contractError,
     loading: contractLoading,
     contract,
     operationsCount,
     connect: connectToContract,
     increaseOperationsCount,
-  } = useContract(tezos, address);
+  } = useContract(tezos);
+
+  useEffect(() => {
+    connectToContract();
+  }, [])
+
+  useEffect(() => {
+    parseStorage();
+  }, [storage, address]);
 
   async function mint() {
+    tezos.setWalletProvider(wallet);
+    tezos.wallet
+      .at(NFT_CONTRACT_ADDRESS)
+      .then((contract) => contract.methods.mint_id([address]).send())
+      .then((op) => {
+        alert("Awaiting confirmation");
+        return op.confirmation();
+      })
+      .then((result) => {
+        if(result.completed) {
+          alert("Complete!");
+        }
+        else {
+          alert("Error :(");
+        }
+      })
+      .finally(() => {
+        connectToContract();
+      })
+      .catch((err) => alert(JSON.stringify(err)));
+  }
+
+  async function parseStorage() {
+    if(!storage || !wallet) {
+      return;
+    }
     try {
-        alert(await tezos.wallet.pkh());
-        const op = await contract.methods.mint([await tezos.wallet.pkh]).send();
-        // await op.confirmation();
-    } catch(e) {
-        alert("error: " + JSON.stringify(e));
+      console.log("parsing storage");
+      let numTokens = await storage.next_token_id;
+      let o = [];
+      for(let i = 0; i < numTokens; i++) {
+        if(await storage.ledger.get(`${i}`) === address) {
+          console.log("pushing");
+          // let entry = storage.metadata.get(`${i}`);
+          // storage.metadata.get(`${i}`).map((item, i) => {
+          //   o.push(item);
+          // })
+          // console.log(typeof(entry[0]));
+          // if(entry) {
+          //   console.log("entry found");
+          //   o.push(entry.title)
+          // }
+          const md = await storage.metadata.get(`${i}`);
+          // md.forEach((entry, i) => {
+          //   console.log(entry.title)
+          // })
+          // const entry = await md.get("First Entry!");
+          // console.log(entry.nats[0]);
+          o.push(md);
+        }
+      }
+      setOwned(o);
+    } catch (e) {
+      alert(e);
     }
   }
-  
-  //Need to configure signer for this
-  //Not just pass address
-  //I think
-  //Or is that what I already did?
-  //Or did I not get the right permissions?
 
   return (
     <div className="App">
       <header className="App-header">
+        <div>{walletError && <p>{walletError}</p>}</div>
+        <div>{contractError && <p>{contractError}</p>}</div>
         <button onClick={connect}>Connect</button>
-        <button onClick={mint}>Mint</button>
-        {/* <div>
+        {initialized && <button onClick={parseStorage}>Parse Storage</button>}
+        {initialized && <button onClick={mint}>Mint</button>}
+        { storage &&
+        <div>
           Next Token ID: {JSON.stringify(storage.next_token_id.c)}
-        </div>
+        </div>}
+        {/* { initialized && */}
+        <h1>Identities:</h1>
         <div>
           {owned.map((item, i) => {
-            return <div>Owner: {item} </div>;
+            return <Identity key={i} entries={item}/>;
           })}
-        </div> */}
+        </div>
       </header>
     </div>
   );
 
   async function connect() {
-    await connectToContract();
     await connectToWallet();
+    await parseStorage();
   }
 }
 

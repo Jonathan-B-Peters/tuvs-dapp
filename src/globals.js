@@ -1,5 +1,5 @@
 const REACT_APP_TEZOS_RPC_URL = 'https://hangzhounet.api.tez.ie';
-const NFT_CONTRACT_ADDRESS = 'KT1CT7i537EogihCjX4JBFkVQhXBmpLc3CA7';
+const NFT_CONTRACT_ADDRESS = 'KT1C6L9UDRktc9Psayg7oti1rwAsG4RMN6ts';
 const PREFERRED_NETWORK_TYPE = 'hangzhounet';
 
 export {

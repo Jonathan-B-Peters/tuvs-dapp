@@ -7,8 +7,9 @@ export function useWallet(tezos) {
     const [address, setAddress] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [wallet, setWallet] = useState(undefined);
 
-    return { initialized, address, error, loading, connect };
+    return { initialized, address, error, loading, wallet, connect };
 
     async function connect() {
         try {
@@ -26,12 +27,14 @@ export function useWallet(tezos) {
     async function initWallet() {
         const options = {
             name: "Tezos User Verification System",
+            preferredNetwork: PREFERRED_NETWORK_TYPE,
+            colorMode: 'dark'
         };
         const wallet = new BeaconWallet(options);
         const network = { type: PREFERRED_NETWORK_TYPE };
         await wallet.requestPermissions({ network });
+        setWallet(wallet);
         tezos.setWalletProvider(wallet);
-        console.log({ wallet });
         const address = await wallet.getPKH();
         return { address };
     }

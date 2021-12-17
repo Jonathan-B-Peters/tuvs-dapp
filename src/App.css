@@ -15,7 +15,7 @@ header {
   justify-content: center;
   /* background-color: #191B1F; */
   opacity: 0.7;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   top: -1px;
   left: -1px;
 }
@@ -72,7 +72,7 @@ header {
   background-position: center;
   background-size: cover;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .column {
@@ -90,7 +90,7 @@ header {
   overflow-wrap: normal;
   font-weight: 100;
   margin: 0px;
-  line-height: 2.5rem;
+  line-height: 4rem;
 }
 
 .title .heavy {

@@ -101,8 +101,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Tezos User Verification System</h1>
-        <div>{walletError && <p>{walletError}</p>}</div>
-        <div>{contractError && <p>{contractError}</p>}</div>
+        <div>{walletError && <p>Wallet error: {walletError}</p>}</div>
+        <div>{contractError && <p>Contract error: {contractError}</p>}</div>
         <button onClick={connect}>Connect Wallet</button>
         {initialized && owned.length == 0 && <button onClick={mint}>Mint</button>}
         <div>

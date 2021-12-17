@@ -5,9 +5,10 @@ function Identity(props) {
     return (
         <div>
             <h1>Entries:</h1>
-            {Array.from(props.entries.values()).map((entry, i) => {
+            {props.entries &&
+            Array.from(props.entries.values()).map((entry, i) => {
                 console.log("title: " + entry.title);
-                return <Entry data={entry}/>;
+                return <Entry key={i} data={entry}/>;
             })}
         </div>
     )

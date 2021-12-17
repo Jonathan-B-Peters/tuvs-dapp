@@ -128,9 +128,11 @@ function App() {
           <div class="dataContainer">
             <div class="phrase">Your digital identity, in your hands.</div>
           </div>
+          <div class="buttonContainer">
+            <button onClick={connect}>Connect Wallet</button>
+          </div>
           <div>{walletError && <p>Wallet error: {walletError}</p>}</div>
           <div>{contractError && <p>Contract error: {contractError}</p>}</div>
-          <button onClick={connect}>Connect Wallet</button>
           {initialized && owned.length == 0 && <button onClick={mint}>Mint</button>}
           <div>
             {owned.map((item, i) => {

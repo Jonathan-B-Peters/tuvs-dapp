@@ -7,6 +7,15 @@ import { useWallet } from './hooks/use-wallet';
 import { useState, useEffect } from 'react';
 import Identity from './Identity'
 
+const welcomeMessage = 
+  <p className="subtitle">
+    Welcome to the home of the Tezos User Verification System.
+    Here, you can create and manager your digital identity. With
+    your permission, other web applications can write new data to your
+    digital identity. To see the system in action, checkout the game
+    tez-snake.
+  </p>
+
 function App() {
 
   const [owned, setOwned] = useState([]);
@@ -98,19 +107,38 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Tezos User Verification System</h1>
-        <div>{walletError && <p>Wallet error: {walletError}</p>}</div>
-        <div>{contractError && <p>Contract error: {contractError}</p>}</div>
-        <button onClick={connect}>Connect Wallet</button>
-        {initialized && owned.length == 0 && <button onClick={mint}>Mint</button>}
-        <div>
-          {owned.map((item, i) => {
-            return <Identity key={i} entries={item}/>;
-          })}
+    <div>
+      <header>
+        <div class="headerContent">
+          <div class="logo">Logo</div>
+          <div class="headerWrapper">
+            <a class="navigation">Home</a>
+            <a class="navigation">About</a>
+            <a class="navigation">Source</a>
+          </div>
         </div>
       </header>
+      <div class="body">
+        <div class="card"></div>
+        <div class="wrapper">
+          <div class="column">
+            <h1 class="title"><span class="heavy">Tezos </span>User Verification System</h1>
+            {welcomeMessage}
+          </div>
+          <div class="dataContainer">
+            <div class="phrase">Your digital identity, in your hands.</div>
+          </div>
+          <div>{walletError && <p>Wallet error: {walletError}</p>}</div>
+          <div>{contractError && <p>Contract error: {contractError}</p>}</div>
+          <button onClick={connect}>Connect Wallet</button>
+          {initialized && owned.length == 0 && <button onClick={mint}>Mint</button>}
+          <div>
+            {owned.map((item, i) => {
+              return <Identity key={i} entries={item}/>;
+            })}
+          </div>
+        </div>
+      </div>
     </div>
   );
 

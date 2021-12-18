@@ -137,6 +137,8 @@ function App() {
             <div class="dataContainer">
               <div class="phrase">Your digital identity, in your hands.</div>
             </div>
+            <div class="buttonContainer"><p class="subtitle centered narrow">This application runs on the
+            Hangzhounet test network. A compatible account can be activated <a href="https://teztnets.xyz/hangzhounet-faucet" target="_blank">here</a>.</p></div>
             <div class="buttonContainer">
               <button onClick={connect}>Connect Wallet</button>
             </div>

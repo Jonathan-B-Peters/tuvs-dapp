@@ -93,27 +93,11 @@ function App() {
     }
     try {
       setParsing(true);
-      console.log("parsing storage");
       let numTokens = await storage.next_token_id;
       let o = [];
       for(let i = 0; i < numTokens; i++) {
         if(await storage.ledger.get(`${i}`) === address) {
-          console.log("pushing");
-          // let entry = storage.metadata.get(`${i}`);
-          // storage.metadata.get(`${i}`).map((item, i) => {
-          //   o.push(item);
-          // })
-          // console.log(typeof(entry[0]));
-          // if(entry) {
-          //   console.log("entry found");
-          //   o.push(entry.title)
-          // }
           const md = await storage.metadata.get(`${i}`);
-          // md.forEach((entry, i) => {
-          //   console.log(entry.title)
-          // })
-          // const entry = await md.get("First Entry!");
-          // console.log(entry.nats[0]);
           o.push(md);
         }
       }
@@ -156,10 +140,7 @@ function App() {
             <div class="buttonContainer">
               <button onClick={connect}>Connect Wallet</button>
             </div>
-            {/* <div>{walletError && <p>Wallet error: {walletError}</p>}</div> */}
-            {/* <div>{contractError && <p>Contract error: {contractError}</p>}</div> */}
             {parsing && <div class="dataContainer"><h1>Loading...</h1></div>}
-            {console.log(owned)}
             {initialized && !parsing && owned.length == 0 && 
               <div>
                 <div class="buttonContainer">{noIdMessage}</div>

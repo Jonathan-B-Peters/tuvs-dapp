@@ -138,9 +138,7 @@ function App() {
         <div class="headerContent">
           <div class="logo" onClick={goHome}></div>
           <div class="headerWrapper">
-            <a class="navigation" onClick={goHome}>Home</a>
-            <a class="navigation" onClick={goAbout}>About</a>
-            <a class="navigation" href="https://github.com/Jonathan-B-Peters/tuvs-dapp" target="_blank">Source</a>
+            <a class="navigation" href="https://github.com/Jonathan-B-Peters/tuvs-dapp" target="_blank">Source Code</a>
           </div>
         </div>
       </header>

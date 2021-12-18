@@ -6,4 +6,4 @@ It is hosted with AWS and can be found [here](https://master.d173refua7xzyw.ampl
 
 The back-end can be found [here](https://github.com/Jonathan-B-Peters/Tezos-User-Verification-System)
 
-For a complete description of the project, see the [write up](./TUVS_WriteUp.docx)
+For a complete description of the project, see the [write up](./TUVS_WriteUp.pdf)

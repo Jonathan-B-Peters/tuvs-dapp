@@ -10,12 +10,12 @@ function Entry(props) {
             <div class="entryContainer">
                 <div class="entryTitle">{props.data.title}</div>
                 {Array.from(props.data.strings.entries()).map((item, i) => {
-                    return <p key={i} >{item[0]}: {item[1]}</p>;
+                    return <p key={i} ><span class="heavy">{item[0]}: </span>{item[1]}</p>;
                 })}
                 {Array.from(props.data.nats.entries()).map((item, i) => {
                     // console.log(typeof(item));
                     // console.log(JSON.stringify(item[0]));
-                    return <p key={i} >{item[0]}: {item[1].toNumber()}</p>;
+                    return <p key={i} ><span class="heavy">{item[0]}: </span>{item[1].toNumber()}</p>;
                 })}
             </div>
         </div>

@@ -10,15 +10,30 @@ import Identity from './Identity'
 const welcomeMessage = 
   <p className="subtitle">
     Welcome to the home of the Tezos User Verification System.
-    Here, you can create and manager your digital identity. With
+    Here, you can create and manage your digital identity. With
     your permission, other web applications can write new data to your
-    digital identity. To see the system in action, checkout the game
-    tez-snake.
+    digital identity. To see the system in action, checkout the
+    game <a href="https://main.d1hhkb9bmopsk1.amplifyapp.com/">Tez-Snake</a>.
+  </p>
+
+const noEntryMessage = 
+  <p className="subtitle centered">
+    Your identity has been created! There just aren't any entries yet. Check
+    out <a href="https://main.d1hhkb9bmopsk1.amplifyapp.com/" target="_blank">Tez-Snake</a> to
+    start using your new digital identity!
+  </p>
+
+const noIdMessage = 
+  <p className="subtitle centered" >
+    Looks like you have not created an identity yet! Click the button
+    below to create a new identity for this wallet address.
   </p>
 
 function App() {
 
   const [owned, setOwned] = useState([]);
+  const [pageState, setPageState] = useState("Home");
+  const [parsing, setParsing] = useState(false);
 
   const tezos = new TezosToolkit(REACT_APP_TEZOS_RPC_URL)
 
@@ -76,6 +91,7 @@ function App() {
       return;
     }
     try {
+      setParsing(true);
       console.log("parsing storage");
       let numTokens = await storage.next_token_id;
       let o = [];
@@ -104,47 +120,64 @@ function App() {
     } catch (e) {
       alert(e);
     }
+    setParsing(false);
+  }
+
+  function goHome() {
+    setPageState("Home");
+  }
+
+  function goAbout() {
+    setPageState("About");
   }
 
   return (
     <div>
       <header>
         <div class="headerContent">
-          <div class="logo">Logo</div>
+          <div class="logo" onClick={goHome}></div>
           <div class="headerWrapper">
-            <a class="navigation">Home</a>
-            <a class="navigation">About</a>
-            <a class="navigation">Source</a>
+            <a class="navigation" onClick={goHome}>Home</a>
+            <a class="navigation" onClick={goAbout}>About</a>
+            <a class="navigation" href="https://github.com/Jonathan-B-Peters/tuvs-dapp" target="_blank">Source</a>
           </div>
         </div>
       </header>
       <div class="body">
         <div class="card"><div class="overlay"></div></div>
-        <div class="wrapper">
-          <div class="column">
-            <h1 class="title"><span class="heavy">Tezos </span>User Verification System</h1>
-            {welcomeMessage}
-          </div>
-          <div class="dataContainer">
-            <div class="phrase">Your digital identity, in your hands.</div>
-          </div>
-          <div class="buttonContainer">
-            <button onClick={connect}>Connect Wallet</button>
-          </div>
-          <div>{walletError && <p>Wallet error: {walletError}</p>}</div>
-          <div>{contractError && <p>Contract error: {contractError}</p>}</div>
-          {initialized && owned.length == 0 &&
-            <div class="buttonContainer">
-              <button onClick={mint}>Create Identity</button>
+        { pageState === "Home" &&
+          <div class="wrapper">
+            <div class="column">
+              <h1 class="title"><span class="heavy">Tezos </span>User Verification System</h1>
+              {welcomeMessage}
             </div>
-          }
-          <div class="idContainer">
-            {/* {owned.map((item, i) => {
-              return <Identity key={i} entries={item}/>;
-            })} */}
+            <div class="dataContainer">
+              <div class="phrase">Your digital identity, in your hands.</div>
+            </div>
+            <div class="buttonContainer">
+              <button onClick={connect}>Connect Wallet</button>
+            </div>
+            <div>{walletError && <p>Wallet error: {walletError}</p>}</div>
+            <div>{contractError && <p>Contract error: {contractError}</p>}</div>
+            {parsing && <div class="dataContainer"><h1>Loading...</h1></div>}
+            {console.log(owned)}
+            {initialized && !parsing && owned.length == 0 && 
+              <div>
+                <div class="buttonContainer">{noIdMessage}</div>
+                <div class="buttonContainer"> <button onClick={mint}>Create Identity</button> </div>
+              </div>
+            }
+            {initialized && !parsing && owned.length > 0 && !owned[0] &&
+              <div class="buttonContainer">{noEntryMessage}</div>
+            }
+            <div class="idContainer">
+              {/* {owned.map((item, i) => {
+                return <Identity key={i} entries={item}/>;
+              })} */}
             {owned[0] && <Identity entries={owned[0]}/>}
+            </div>
           </div>
-        </div>
+        }
       </div>
     </div>
   );

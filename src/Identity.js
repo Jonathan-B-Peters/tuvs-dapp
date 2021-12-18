@@ -8,7 +8,6 @@ function Identity(props) {
             <div class="entriesContainer">
                 {props.entries &&
                 Array.from(props.entries.values()).map((entry, i) => {
-                    console.log("title: " + entry.title);
                     return <Entry key={i} data={entry}/>;
                 })}
             </div>

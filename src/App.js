@@ -34,6 +34,7 @@ function App() {
   const [owned, setOwned] = useState([]);
   const [pageState, setPageState] = useState("Home");
   const [parsing, setParsing] = useState(false);
+  const [awaiting, setAwaiting] = useState(false);
 
   const tezos = new TezosToolkit(REACT_APP_TEZOS_RPC_URL)
 
@@ -69,12 +70,12 @@ function App() {
       .at(NFT_CONTRACT_ADDRESS)
       .then((contract) => contract.methods.mint_id([address]).send())
       .then((op) => {
-        alert("Awaiting confirmation");
+        setAwaiting(true);
         return op.confirmation();
       })
       .then((result) => {
         if(result.completed) {
-          alert("Complete!");
+          setAwaiting(false);
         }
         else {
           alert("Error :(");
@@ -157,8 +158,8 @@ function App() {
             <div class="buttonContainer">
               <button onClick={connect}>Connect Wallet</button>
             </div>
-            <div>{walletError && <p>Wallet error: {walletError}</p>}</div>
-            <div>{contractError && <p>Contract error: {contractError}</p>}</div>
+            {/* <div>{walletError && <p>Wallet error: {walletError}</p>}</div> */}
+            {/* <div>{contractError && <p>Contract error: {contractError}</p>}</div> */}
             {parsing && <div class="dataContainer"><h1>Loading...</h1></div>}
             {console.log(owned)}
             {initialized && !parsing && owned.length == 0 && 
@@ -167,6 +168,7 @@ function App() {
                 <div class="buttonContainer"> <button onClick={mint}>Create Identity</button> </div>
               </div>
             }
+            {awaiting && <div class="buttonContainer"><div class="phrase">Minting...</div></div>}
             {initialized && !parsing && owned.length > 0 && !owned[0] &&
               <div class="buttonContainer">{noEntryMessage}</div>
             }

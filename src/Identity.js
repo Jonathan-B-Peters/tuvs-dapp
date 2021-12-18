@@ -4,12 +4,14 @@ import Entry from './Entry'
 function Identity(props) {
     return (
         <div>
-            <h1>Entries:</h1>
-            {props.entries &&
-            Array.from(props.entries.values()).map((entry, i) => {
-                console.log("title: " + entry.title);
-                return <Entry key={i} data={entry}/>;
-            })}
+            <h1>Your Identity</h1>
+            <div class="entriesContainer">
+                {props.entries &&
+                Array.from(props.entries.values()).map((entry, i) => {
+                    console.log("title: " + entry.title);
+                    return <Entry key={i} data={entry}/>;
+                })}
+            </div>
         </div>
     )
 }

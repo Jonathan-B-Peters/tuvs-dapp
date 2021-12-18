@@ -119,7 +119,7 @@ function App() {
         </div>
       </header>
       <div class="body">
-        <div class="card"></div>
+        <div class="card"><div class="overlay"></div></div>
         <div class="wrapper">
           <div class="column">
             <h1 class="title"><span class="heavy">Tezos </span>User Verification System</h1>
@@ -133,11 +133,16 @@ function App() {
           </div>
           <div>{walletError && <p>Wallet error: {walletError}</p>}</div>
           <div>{contractError && <p>Contract error: {contractError}</p>}</div>
-          {initialized && owned.length == 0 && <button onClick={mint}>Mint</button>}
-          <div>
-            {owned.map((item, i) => {
+          {initialized && owned.length == 0 &&
+            <div class="buttonContainer">
+              <button onClick={mint}>Create Identity</button>
+            </div>
+          }
+          <div class="idContainer">
+            {/* {owned.map((item, i) => {
               return <Identity key={i} entries={item}/>;
-            })}
+            })} */}
+            {owned[0] && <Identity entries={owned[0]}/>}
           </div>
         </div>
       </div>

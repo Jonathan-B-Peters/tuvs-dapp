@@ -26,9 +26,10 @@ header {
 }
 
 .logo {
-  padding: 2rem;
+  padding: 2rem 2rem;
   background-image: url('./images/logo.png');
   background-size: cover;
+  background-position: center;
   size: 512px 512px;
   cursor: pointer;
 }
@@ -208,11 +209,12 @@ button:hover {
   display: flex;
   flex-direction: column;
   min-width: 350px;
-  /* max-width: 375px; */
+  max-width: 375px;
   background-color: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.19);
   padding: 2rem;
   border-radius: 24px;
+  backdrop-filter: blur(4px);
   box-shadow:
     rgb(0 0 0 / 2%) 0px 0px 1px,
     rgb(0 0 0 / 2%) 0px 4px 8px,

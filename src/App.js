@@ -171,10 +171,7 @@ function App() {
               <div class="buttonContainer">{noEntryMessage}</div>
             }
             <div class="idContainer">
-              {/* {owned.map((item, i) => {
-                return <Identity key={i} entries={item}/>;
-              })} */}
-            {owned[0] && <Identity entries={owned[0]}/>}
+              {owned[0] && <Identity entries={owned[0]}/>}
             </div>
           </div>
         }
